@@ -1,4 +1,5 @@
 # Laravel Slow Query Detector
+This package allows you to detect controller methods in the code that make a lot of queries to the database as well as find very heavy queries.
 
 ## Requirements
  * Laravel 5.5+
