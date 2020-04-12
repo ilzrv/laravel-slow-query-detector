@@ -65,7 +65,7 @@ return [
         |
         */
 
-        'max_time' => (int) env('SQD_QUERY_MAX_TIME', 0),
+        'max_time' => (int) env('SQD_QUERY_MAX_TIME', 50),
     ],
 
 ];
