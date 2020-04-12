@@ -26,7 +26,7 @@ class SlowQueryDetectorMiddleware
 
         \DB::listen(function ($query) {
             $this->queriesCount++;
-            if ($query->time > config('slow-query-detector.query.max_time')) {
+            if ($query->time > config('sqd.query.max_time')) {
                 $this->heavyQueryCount++;
                 if ($query->time > $this->heaviestQueryTime) {
                     $this->heaviestQueryTime = $query->time;
@@ -48,29 +48,33 @@ class SlowQueryDetectorMiddleware
 
     protected function needNotify()
     {
-        return $this->queriesCount > config('slow-query-detector.code.max_queries')
-            || $this->executionTime > config('slow-query-detector.code.max_time')
-            || $this->heaviestQueryTime > config('slow-query-detector.query.max_time');
+        return $this->queriesCount > config('sqd.code.max_queries')
+            || $this->executionTime > config('sqd.code.max_time')
+            || $this->heaviestQueryTime > config('sqd.query.max_time');
     }
 
     protected function notify($request)
     {
-        app('log')->critical(print_r([
-            'Execution Time' => $this->executionTime,
-            'Queries Count' => $this->queriesCount,
-            'Heavy Queries Count' => $this->heavyQueryCount,
-            'Full URL' => $request->fullUrl(),
-            'Action' => $request->route()->getActionName(),
-            'Heaviest Query' => [
-                'Query' => $this->heaviestQuery,
-                'Time' => $this->heaviestQueryTime,
+        $data = [
+            'SQD' => [
+                'Execution Time' => $this->executionTime . ' ms.',
+                'Queries Count' => $this->queriesCount,
+                'Heavy Queries Count' => $this->heavyQueryCount,
+                'Full URL' => $request->fullUrl(),
+                'Action' => $request->route()->getActionName(),
+                'Heaviest Query' => [
+                    'Query' => $this->heaviestQuery,
+                    'Time' => $this->heaviestQueryTime . ' ms.',
+                ]
             ]
-        ], true));
+        ];
+
+        app('log')->critical(print_r($data, true));
     }
 
     protected function getQuery($query)
     {
-        return config('slow-query-detector.query.with_bindings')
+        return config('sqd.query.with_bindings')
             ? Str::replaceArray('?', $query->bindings, $query->sql)
             : $query->sql;
     }
