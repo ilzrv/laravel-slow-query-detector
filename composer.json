@@ -16,11 +16,21 @@
             "Ilzrv\\LaravelSlowQueryDetector\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Ilzrv\\LaravelSlowQueryDetector\\Tests\\": "tests"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
                 "Ilzrv\\LaravelSlowQueryDetector\\ServiceProvider"
             ]
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1",
+        "orchestra/testbench": "^5.1",
+        "timacdonald/log-fake": "^1.6"
     }
 }
