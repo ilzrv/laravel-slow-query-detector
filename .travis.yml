@@ -28,6 +28,7 @@ install:
   - composer require --dev "timacdonald/log-fake" --no-interaction --no-update
   - composer require --dev "orchestra/testbench" --no-interaction --no-update
   - composer require --dev "phpunit/phpunit:${PHPUNIT}" --no-interaction --no-update
+  - travis_retry composer install --no-interaction --prefer-dist
 
 script:
   - vendor/bin/phpunit
