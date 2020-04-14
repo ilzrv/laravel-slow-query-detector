@@ -1,11 +1,30 @@
 language: php
-php:
-  - '7.2'
-  - '7.3'
-  - '7.4'
 
-before_script:
-  - composer install --prefer-source --no-interaction
+matrix:
+  include:
+    - php: '7.2'
+      env: LARAVEL='5.5.*'
+    - php: '7.2'
+      env: LARAVEL='5.8.*'
+    - php: '7.2'
+      env: LARAVEL='^6.0'
+    - php: '7.3'
+      env: LARAVEL='5.5.*'
+    - php: '7.3'
+      env: LARAVEL='5.8.*'
+    - php: '7.3'
+      env: LARAVEL='^6.0'
+    - php: '7.4'
+      env: LARAVEL='5.5.*'
+    - php: '7.4'
+      env: LARAVEL='5.8.*'
+    - php: '7.4'
+      env: LARAVEL='^6.0'
+    - php: '7.4'
+      env: LARAVEL='^7.0'
+
+install:
+  - composer require "laravel/framework:${LARAVEL}" --no-interaction --no-update
 
 script:
   - vendor/bin/phpunit
