@@ -29,7 +29,7 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.1",
+        "phpunit/phpunit": "^8.5|^9.1",
         "orchestra/testbench": "^3|^4|^5",
         "timacdonald/log-fake": "^1.6"
     }
