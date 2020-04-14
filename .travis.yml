@@ -3,28 +3,31 @@ language: php
 matrix:
   include:
     - php: '7.2'
-      env: LARAVEL='5.5.*'
+      env: LARAVEL='5.5.*' PHPUNIT='~6.0'
     - php: '7.2'
-      env: LARAVEL='5.8.*'
+      env: LARAVEL='5.8.*' PHPUNIT='^7.5'
     - php: '7.2'
-      env: LARAVEL='^6.0'
+      env: LARAVEL='^6.0' PHPUNIT='^7.5'
     - php: '7.3'
-      env: LARAVEL='5.5.*'
+      env: LARAVEL='5.5.*' PHPUNIT='~6.0'
     - php: '7.3'
-      env: LARAVEL='5.8.*'
+      env: LARAVEL='5.8.*' PHPUNIT='^7.5'
     - php: '7.3'
-      env: LARAVEL='^6.0'
+      env: LARAVEL='^6.0' PHPUNIT='^7.5'
     - php: '7.4'
-      env: LARAVEL='5.5.*'
+      env: LARAVEL='5.5.*' PHPUNIT='~6.0'
     - php: '7.4'
-      env: LARAVEL='5.8.*'
+      env: LARAVEL='5.8.*' PHPUNIT='^7.5'
     - php: '7.4'
-      env: LARAVEL='^6.0'
+      env: LARAVEL='^6.0' PHPUNIT='^7.5'
     - php: '7.4'
-      env: LARAVEL='^7.0'
+      env: LARAVEL='^7.0' PHPUNIT='^8.4'
 
 install:
   - composer require "laravel/framework:${LARAVEL}" --no-interaction --no-update
+  - composer require --dev "timacdonald/log-fake" --no-interaction --no-update
+  - composer require --dev "orchestra/testbench" --no-interaction --no-update
+  - composer require --dev "phpunit/phpunit:${PHPUNIT}" --no-interaction --no-update
 
 script:
   - vendor/bin/phpunit
