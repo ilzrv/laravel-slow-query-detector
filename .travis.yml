@@ -25,7 +25,7 @@ matrix:
 
 install:
   - composer require "laravel/framework:${LARAVEL}" --no-interaction --no-update
-  - composer require --dev "phpunit/phpunit:${PHPUNIT}" --no-interaction --no-update
+#  - composer require --dev "phpunit/phpunit:${PHPUNIT}" --no-interaction --no-update
   - COMPOSER_MEMORY_LIMIT=-1 travis_retry composer install --no-interaction --prefer-dist
 
 script:
