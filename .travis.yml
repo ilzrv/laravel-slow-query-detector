@@ -3,32 +3,29 @@ language: php
 matrix:
   include:
     - php: '7.2'
-      env: LARAVEL='5.5.*' PHPUNIT='^7.5'
+      env: LARAVEL='5.5.*' PHPUNIT='^8.5'
     - php: '7.2'
-      env: LARAVEL='5.8.*' PHPUNIT='^7.5'
+      env: LARAVEL='5.8.*' PHPUNIT='^8.5'
     - php: '7.2'
-      env: LARAVEL='^6.0' PHPUNIT='^7.5'
+      env: LARAVEL='^6.0' PHPUNIT='^8.5'
     - php: '7.3'
-      env: LARAVEL='5.5.*' PHPUNIT='^7.5'
+      env: LARAVEL='5.5.*' PHPUNIT='^9.1'
     - php: '7.3'
-      env: LARAVEL='5.8.*' PHPUNIT='^7.5'
+      env: LARAVEL='5.8.*' PHPUNIT='^9.1'
     - php: '7.3'
-      env: LARAVEL='^6.0' PHPUNIT='^7.5'
+      env: LARAVEL='^6.0' PHPUNIT='^9.1'
     - php: '7.4'
-      env: LARAVEL='5.5.*' PHPUNIT='^7.5'
+      env: LARAVEL='5.5.*' PHPUNIT='^9.1'
     - php: '7.4'
-      env: LARAVEL='5.8.*' PHPUNIT='^7.5'
+      env: LARAVEL='5.8.*' PHPUNIT='^9.1'
     - php: '7.4'
-      env: LARAVEL='^6.0' PHPUNIT='^7.5'
+      env: LARAVEL='^6.0' PHPUNIT='^9.1'
     - php: '7.4'
-      env: LARAVEL='^7.0' PHPUNIT='^8.4'
-
-before_script:
-  - phpenv config-rm xdebug.ini || true
+      env: LARAVEL='^7.0' PHPUNIT='^9.1'
 
 install:
   - composer require "laravel/framework:${LARAVEL}" --no-interaction --no-update
-#  - composer require --dev "phpunit/phpunit:${PHPUNIT}" --no-interaction --no-update
+  - composer require --dev "phpunit/phpunit:${PHPUNIT}" --no-interaction --no-update
   - travis_retry composer install --no-interaction --prefer-dist
 
 script:
