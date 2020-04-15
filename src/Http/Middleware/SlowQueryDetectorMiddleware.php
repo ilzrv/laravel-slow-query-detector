@@ -3,6 +3,7 @@
 namespace Ilzrv\LaravelSlowQueryDetector\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SlowQueryDetectorMiddleware
@@ -69,7 +70,7 @@ class SlowQueryDetectorMiddleware
             ]
         ];
 
-        app('log')->critical(print_r($data, true));
+        Log::critical(print_r($data, true));
     }
 
     protected function getQuery($query)

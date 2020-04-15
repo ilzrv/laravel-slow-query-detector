@@ -3,6 +3,7 @@
 namespace Ilzrv\LaravelSlowQueryDetector\Tests;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class SlowCodeTest extends TestCase
 {
@@ -13,7 +14,7 @@ class SlowCodeTest extends TestCase
         });
 
         Log::assertLogged('critical', function ($message, $context) {
-            return \Str::contains($message, 'SQD');
+            return Str::contains($message, 'SQD');
         });
     }
 
@@ -36,7 +37,7 @@ class SlowCodeTest extends TestCase
         });
 
         Log::assertLogged('critical', function ($message, $context) {
-            return \Str::contains($message, 'SQD');
+            return Str::contains($message, 'SQD');
         });
     }
 
