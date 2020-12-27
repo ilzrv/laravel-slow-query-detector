@@ -4,37 +4,43 @@ on: [push, pull_request]
 
 jobs:
   tests:
+    name: PHP ${{ matrix.php }}, Laravel ${{ matrix.laravel }}
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        php: [7.1, 7.2, 7.3, 7.4]
-        laravel: [5.6.*, 6.*, 7.*]
-        dependency-version: [prefer-lowest, prefer-stable]
+        php: [7.2, 7.3, 7.4]
+        laravel: [5.6.*, 5.7.*, 5.8.*, 6.*, 7.*]
         include:
           - laravel: 5.6.*
-            testbench: 3.6
-            phpunit: ~7.0
+            testbench: 3.6.*
+            phpunit: 7.*
+          - laravel: 5.7.*
+            testbench: 3.7.*
+            phpunit: 7.*
+          - laravel: 5.8.*
+            testbench: 3.8.*
+            phpunit: 8.*
           - laravel: 6.*
             testbench: 4.*
-            phpunit: ~8.5
-            php: [7.2, 7.3, 7.4]
+            phpunit: 9.*
           - laravel: 7.*
             testbench: 5.*
-            phpunit: ~8.5
-            php: [7.2, 7.3, 7.4]
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+            phpunit: 9.*
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, mbstring, zip, pcntl, iconv
-          coverage: none
+
       - name: Install Dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "phpunit/phpunit:${{ matrix.phpunit }}" --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+          composer update --prefer-dist --no-interaction --no-progress --no-suggest
+
       - name: Execute tests
         run: ./vendor/bin/phpunit
