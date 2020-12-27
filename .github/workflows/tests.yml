@@ -17,9 +17,11 @@ jobs:
           - laravel: 6.*
             testbench: 4.*
             phpunit: ~8.5
+            php: [7.2, 7.3, 7.4]
           - laravel: 7.*
             testbench: 5.*
             phpunit: ~8.5
+            php: [7.2, 7.3, 7.4]
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
     steps:
       - name: Checkout Code
