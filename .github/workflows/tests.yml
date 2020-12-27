@@ -27,6 +27,9 @@ jobs:
           - laravel: 7.*
             testbench: 5.*
             phpunit: 9.*
+          - laravel: 8.*
+            testbench: 6.*
+            phpunit: 9.*
 
     steps:
       - name: Checkout Code
