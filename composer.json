@@ -2,9 +2,7 @@
     "name": "ilzrv/laravel-slow-query-detector",
     "description": "Laravel Slow DB Query Detector",
     "require": {
-        "illuminate/database": "^5.6|^6.0|^7.0|^8.0",
-        "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
-        "illuminate/log": "^5.6|^6.0|^7.0|^8.0"
+        "illuminate/support": "^5.6|^6.0|^7.0|^8.0"
     },
     "license": "MIT",
     "authors": [
