@@ -1,31 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ilzrv\LaravelSlowQueryDetector;
 
 use Ilzrv\LaravelSlowQueryDetector\Http\Middleware\SlowQueryDetectorMiddleware;
 
-class ServiceProvider extends \Illuminate\Support\ServiceProvider
+final class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/sqd.php', 'sqd');
     }
 
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([__DIR__ . '/../config/sqd.php' => config_path('sqd.php')]);
 
-        if (config('sqd.enabled')) {
+        if (config('sqd.enabled') === true) {
             $this->app['router']->pushMiddlewareToGroup('web', SlowQueryDetectorMiddleware::class);
         }
     }

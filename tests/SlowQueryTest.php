@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ilzrv\LaravelSlowQueryDetector\Tests;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use TiMacDonald\Log\LogEntry;
 
-class SlowQueryTest extends TestCase
+final class SlowQueryTest extends TestCase
 {
-    public function testBeNotifiedWhenQueryExceededMaxTime()
+    public function testBeNotifiedWhenQueryExceededMaxTime(): void
     {
         $this->request(function () {
             $connection = $this->getConnectionWithSleepFunction();
@@ -16,12 +19,12 @@ class SlowQueryTest extends TestCase
             return response('slow');
         });
 
-        Log::assertLogged('critical', function ($message, $context) {
-            return Str::contains($message, 'SQD');
-        });
+        Log::assertLogged(
+            fn(LogEntry $log) => $log->level === 'critical' && Str::contains($log->message, 'SQD')
+        );
     }
 
-    public function testBeSilentWhenQueryNotExceededMaxTime()
+    public function testBeSilentWhenQueryNotExceededMaxTime(): void
     {
         $this->request(function () {
             $connection = $this->getConnectionWithSleepFunction();
@@ -30,6 +33,6 @@ class SlowQueryTest extends TestCase
             return response('fast');
         });
 
-        Log::assertNotLogged('critical');
+        Log::assertNotLogged(fn(LogEntry $log) => $log->level === 'critical');
     }
 }

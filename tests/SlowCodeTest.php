@@ -4,30 +4,27 @@ namespace Ilzrv\LaravelSlowQueryDetector\Tests;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use TiMacDonald\Log\LogEntry;
 
 class SlowCodeTest extends TestCase
 {
-    public function testBeNotifiedWhenCodeExceededMaxTime()
+    public function testBeNotifiedWhenCodeExceededMaxTime(): void
     {
-        $this->request(function () {
-            usleep(1000001); // 1 s
-        });
+        $this->request(fn() => usleep(1000000)); // 1 s
 
-        Log::assertLogged('critical', function ($message, $context) {
-            return Str::contains($message, 'SQD');
-        });
+        Log::assertLogged(
+            fn(LogEntry $log) => $log->level === 'critical' && Str::contains($log->message, 'SQD')
+        );
     }
 
-    public function testBeSilentWhenCodeRunsFine()
+    public function testBeSilentWhenCodeRunsFine(): void
     {
-        $this->request(function () {
-            usleep(900000); // 0.9 s
-        });
+        $this->request(fn() => usleep(900000)); // 0.9 s
 
-        Log::assertNotLogged('critical');
+        Log::assertNotLogged(fn(LogEntry $log) => $log->level === 'critical');
     }
 
-    public function testBeNotifiedWhenCodeHasTooManyQueries()
+    public function testBeNotifiedWhenCodeHasTooManyQueries(): void
     {
         $this->request(function () {
             $connection = $this->getConnectionWithSleepFunction();
@@ -36,12 +33,12 @@ class SlowCodeTest extends TestCase
             }
         });
 
-        Log::assertLogged('critical', function ($message, $context) {
-            return Str::contains($message, 'SQD');
-        });
+        Log::assertLogged(
+            fn(LogEntry $log) => $log->level === 'critical' && Str::contains($log->message, 'SQD')
+        );
     }
 
-    public function testBeSilentWhenCodeHasFineCountQueries()
+    public function testBeSilentWhenCodeHasFineCountQueries(): void
     {
         $this->request(function () {
             $connection = $this->getConnectionWithSleepFunction();
@@ -50,6 +47,6 @@ class SlowCodeTest extends TestCase
             }
         });
 
-        Log::assertNotLogged('critical');
+        Log::assertNotLogged(fn(LogEntry $log) => $log->level === 'critical');
     }
 }
