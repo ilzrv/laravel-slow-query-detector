@@ -14,9 +14,13 @@ use Psr\Log\LoggerInterface;
 final class SlowQueryDetectorMiddleware
 {
     protected int $queriesCount = 0;
+
     protected int $heavyQueryCount = 0;
+
     protected float $heaviestQueryTime = 0;
+
     protected string $heaviestQuery = '';
+
     protected float $executionTime = 0;
 
     public function __construct(
@@ -72,8 +76,8 @@ final class SlowQueryDetectorMiddleware
                 'Heaviest Query' => [
                     'Query' => $this->heaviestQuery,
                     'Time' => $this->heaviestQueryTime . ' ms.',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->logger->critical(

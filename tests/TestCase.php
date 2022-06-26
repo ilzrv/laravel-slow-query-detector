@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Ilzrv\LaravelSlowQueryDetector\Tests;
 
-use Illuminate\Database\SQLiteConnection;
+use Illuminate\Database\Connection;
+use Illuminate\Database\DatabaseManager;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Ilzrv\LaravelSlowQueryDetector\Http\Middleware\SlowQueryDetectorMiddleware;
 use Ilzrv\LaravelSlowQueryDetector\ServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use Illuminate\Support\Facades\Log;
 use TiMacDonald\Log\LogFake;
 
 abstract class TestCase extends OrchestraTestCase
@@ -18,7 +19,7 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::setUp();
 
-        Log::swap(new LogFake);
+        Log::swap(new LogFake());
     }
 
     protected function getPackageProviders($app): array
@@ -35,22 +36,27 @@ abstract class TestCase extends OrchestraTestCase
         $this->get($uri);
     }
 
-    public function getConnectionWithSleepFunction(string $name = 'sqn'): SQLiteConnection
+    public function getConnectionWithSleepFunction(string $name = 'sqn'): Connection
     {
-        app()['config']->set('database.connections.'.$name, [
-            'driver'   => 'sqlite',
+        app()['config']->set('database.connections.' . $name, [
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
 
-        $connection = \DB::connection($name);
-        $pdo = $connection->getPdo();
-        $pdo->sqliteCreateFunction(
-            'sleep',
-            function ($miliseconds) {
-                return usleep($miliseconds * 1000);
-            }
-        );
+        /** @var DatabaseManager $databaseManager */
+        $databaseManager = app(DatabaseManager::class);
+
+        $connection = $databaseManager->connection($name);
+
+        $connection
+            ->getPdo()
+            ->sqliteCreateFunction(
+                'sleep',
+                function (int $milliseconds) {
+                    return usleep($milliseconds * 1000);
+                }
+            );
 
         return $connection;
     }
