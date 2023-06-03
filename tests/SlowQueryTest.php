@@ -14,7 +14,7 @@ final class SlowQueryTest extends TestCase
     {
         $this->request(function () {
             $connection = $this->getConnectionWithSleepFunction();
-            $connection->select((\DB::raw('select sleep(100)')));
+            $connection->select('select sleep(100)');
 
             return response('slow');
         });
@@ -28,7 +28,7 @@ final class SlowQueryTest extends TestCase
     {
         $this->request(function () {
             $connection = $this->getConnectionWithSleepFunction();
-            $connection->select((\DB::raw('select sleep(1)')));
+            $connection->select('select sleep(1)');
 
             return response('fast');
         });

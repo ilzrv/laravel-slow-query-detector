@@ -1,5 +1,6 @@
-.idea
-.phpunit.result.cache
-.phpunit.xml.dist
-composer.lock
-vendor/
+/.idea/
+/.phpunit.cache/
+/.phpunit.result.cache
+/.phpunit.xml.dist
+/composer.lock
+/vendor/

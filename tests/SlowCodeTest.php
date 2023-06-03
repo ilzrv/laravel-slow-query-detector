@@ -29,7 +29,7 @@ class SlowCodeTest extends TestCase
         $this->request(function () {
             $connection = $this->getConnectionWithSleepFunction();
             for ($i = 0; $i < 51; $i++) {
-                $connection->select((\DB::raw('select sleep(1)')));
+                $connection->select('select sleep(1)');
             }
         });
 
@@ -43,7 +43,7 @@ class SlowCodeTest extends TestCase
         $this->request(function () {
             $connection = $this->getConnectionWithSleepFunction();
             for ($i = 0; $i < 50; $i++) {
-                $connection->select((\DB::raw('select sleep(1)')));
+                $connection->select('select sleep(1)');
             }
         });
 
