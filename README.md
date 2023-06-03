@@ -8,8 +8,8 @@ This package allows you to detect controller methods in the code that make a lot
 
 ## Requirements
 
- * PHP 8.0 / 8.1
- * Laravel 9 / 10
+ * PHP 8.0+
+ * Laravel 9+
 
 ## Installation
 
